@@ -1,1 +1,81 @@
+= milk-ssg
+:toc: auto
+:toclevels: 3
 
+**The definitive COW esoteric language static site generator.**
+
+== Overview
+
+milk-ssg is a static site generator written in the COW esoteric programming
+language. It proves that even the most unconventional languages can be used
+to build functional tools.
+
+== Language Enforcement
+
+[IMPORTANT]
+====
+This SSG **MUST** be written in COW. No exceptions.
+
+Forbidden languages for SSG logic:
+
+* Python
+* JavaScript/TypeScript
+* Brainfuck (use COW)
+* Any language other than COW
+
+The **ONLY** non-COW code allowed is the ReScript MCP adapter in `adapters/`.
+====
+
+== COW Language
+
+COW is a Brainfuck variant with bovine-themed commands:
+
+[cols="1,3"]
+|===
+| Command | Action
+| moo | Conditional skip (if memory is zero, skip to MOO)
+| mOo | Move memory pointer back
+| moO | Move memory pointer forward
+| mOO | Execute value at current memory as instruction
+| Moo | Input (if memory is zero) or output ASCII
+| MOo | Decrement memory
+| MoO | Increment memory
+| MOO | Loop end (if memory is non-zero, jump back to moo)
+| OOO | Set current memory to zero
+| MMM | If memory is zero, copy previous. Else copy to previous
+| OOM | Print memory as integer
+| oom | Read integer to memory
+|===
+
+== Requirements
+
+* COW interpreter (or bundled interpreter)
+
+== Building
+
+[source,bash]
+----
+cow src/milk-ssg.cow > _site/index.html
+----
+
+== Project Structure
+
+[source]
+----
+milk-ssg/
+├── src/                  # COW source (THE SSG)
+│   └── milk-ssg.cow     # The esoteric SSG
+├── adapters/             # ReScript MCP adapter only
+├── STATE.scm             # Project state
+├── ECOSYSTEM.scm         # Ecosystem position
+├── META.scm              # Architecture decisions
+└── .claude/CLAUDE.md     # AI guidelines
+----
+
+== Part of poly-ssg
+
+milk-ssg is a satellite of the https://github.com/hyperpolymath/poly-ssg-mcp[poly-ssg-mcp] hub.
+
+== License
+
+AGPL-3.0-or-later
