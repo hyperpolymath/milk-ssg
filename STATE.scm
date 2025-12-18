@@ -3,8 +3,8 @@
 ;; SPDX-FileCopyrightText: 2025 Jonathan D.A. Jewell
 
 (define metadata
-  '((version . "1.0.0")
-    (updated . "2025-12-16")
+  '((version . "1.0.1")
+    (updated . "2025-12-17")
     (project . "milk-ssg")
     (required-language . "COW")))
 
@@ -16,21 +16,30 @@
     (enforcement . "strict")))
 
 (define current-position
-  '((phase . "v1.0 - COW Implementation Complete")
+  '((phase . "v1.0.1 - Security Hardening Complete")
     (overall-completion . 100)
     (components ((cow-engine ((status . "complete") (file . "src/milk-ssg.cow") (completion . 100)))
-                 (mcp-adapter ((status . "pending") (language . "ReScript") (completion . 0)))))))
+                 (mcp-adapter ((status . "complete") (language . "ReScript") (file . "adapters/src/MilkAdapter.res") (completion . 100)))
+                 (security ((status . "hardened") (completion . 100)))))))
 
 (define blockers-and-issues
   '((critical ())
-    (high-priority ())))
+    (high-priority ())
+    (resolved
+     (("SECURITY.md template placeholders" . "fixed 2025-12-17")
+      ("Command injection in MilkAdapter" . "fixed 2025-12-17")
+      ("Unnecessary dependabot ecosystems" . "fixed 2025-12-17")))))
 
 (define critical-next-actions
-  '((immediate (("Connect MCP adapter in ReScript" . high)))
-    (this-week (("Test with COW interpreter" . medium)))))
+  '((immediate ())
+    (this-week (("Test with COW interpreter" . medium)
+                ("Add integration tests" . low)))))
 
 (define session-history
   '((snapshots
+     ((date . "2025-12-17")
+      (session . "security-review")
+      (notes . "Fixed SECURITY.md placeholders, command injection in MilkAdapter.res, cleaned dependabot.yml"))
      ((date . "2025-12-16")
       (session . "language-fix")
       (notes . "Rewrote from Python to pure COW. Enforced language requirements.")))))
@@ -40,4 +49,5 @@
     (language . "COW")
     (completion . 100)
     (blockers . 0)
-    (updated . "2025-12-16")))
+    (security-status . "hardened")
+    (updated . "2025-12-17")))

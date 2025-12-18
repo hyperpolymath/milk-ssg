@@ -34,6 +34,17 @@ module Adapter = {
   @module("child_process")
   external execSync: (string, 'options) => string = "execSync"
 
+  // Security: Sanitize path input to prevent command injection
+  let sanitizePath = (input: string): option<string> => {
+    // Only allow alphanumeric, dots, hyphens, underscores, and path separators
+    let validPattern = %re("/^[a-zA-Z0-9._\-\/]+$/")
+    if Js.Re.test_(validPattern, input) && !Js.String2.includes(input, "..") {
+      Some(input)
+    } else {
+      None
+    }
+  }
+
   let runCommand = (cmd: string, ~cwd: option<string>=?): commandResult => {
     try {
       let options = switch cwd {
@@ -88,7 +99,7 @@ module Adapter = {
       }`),
       execute: (params) => {
         Js.Promise.make((~resolve, ~reject as _) => {
-          let path = switch Js.Json.decodeObject(params) {
+          let rawPath = switch Js.Json.decodeObject(params) {
           | Some(obj) =>
             switch Js.Dict.get(obj, "path") {
             | Some(v) => Js.Json.decodeString(v)->Belt.Option.getWithDefault(".")
@@ -96,9 +107,14 @@ module Adapter = {
             }
           | None => "."
           }
-          // Interpret the COW source file
-          let result = runCommand("cow src/milk-ssg.cow > _site/index.html", ~cwd=Some(path))
-          resolve(result)
+          // Security: Validate path before use
+          switch sanitizePath(rawPath) {
+          | Some(path) =>
+            let result = runCommand("cow src/milk-ssg.cow > _site/index.html", ~cwd=Some(path))
+            resolve(result)
+          | None =>
+            resolve({success: false, stdout: "", stderr: "Invalid path: contains forbidden characters", code: 1})
+          }
         })
       },
     },
@@ -114,7 +130,7 @@ module Adapter = {
       }`),
       execute: (params) => {
         Js.Promise.make((~resolve, ~reject as _) => {
-          let path = switch Js.Json.decodeObject(params) {
+          let rawPath = switch Js.Json.decodeObject(params) {
           | Some(obj) =>
             switch Js.Dict.get(obj, "path") {
             | Some(v) => Js.Json.decodeString(v)->Belt.Option.getWithDefault(".")
@@ -122,7 +138,7 @@ module Adapter = {
             }
           | None => "."
           }
-          let file = switch Js.Json.decodeObject(params) {
+          let rawFile = switch Js.Json.decodeObject(params) {
           | Some(obj) =>
             switch Js.Dict.get(obj, "file") {
             | Some(v) => Js.Json.decodeString(v)->Belt.Option.getWithDefault("src/milk-ssg.cow")
@@ -130,8 +146,19 @@ module Adapter = {
             }
           | None => "src/milk-ssg.cow"
           }
-          let result = runCommand(`cow ${file}`, ~cwd=Some(path))
-          resolve(result)
+          // Security: Validate both path and file to prevent command injection
+          switch (sanitizePath(rawPath), sanitizePath(rawFile)) {
+          | (Some(path), Some(file)) =>
+            // Additional check: file must end with .cow
+            if Js.String2.endsWith(file, ".cow") {
+              let result = runCommand(`cow ${file}`, ~cwd=Some(path))
+              resolve(result)
+            } else {
+              resolve({success: false, stdout: "", stderr: "Invalid file: must be a .cow file", code: 1})
+            }
+          | _ =>
+            resolve({success: false, stdout: "", stderr: "Invalid path or file: contains forbidden characters", code: 1})
+          }
         })
       },
     },
