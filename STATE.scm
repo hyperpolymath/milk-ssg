@@ -1,19 +1,35 @@
 ;;; STATE.scm — milk-ssg
 ;; SPDX-License-Identifier: AGPL-3.0-or-later
 ;; SPDX-FileCopyrightText: 2025 Jonathan D.A. Jewell
+;;
+;; Current project state and completion tracking
+
+(define-module (milk-ssg state)
+  #:export (metadata components completion roadmap))
+
+;; ============================================================================
+;; METADATA
+;; ============================================================================
 
 (define metadata
   '((version . "1.0.1")
     (updated . "2025-12-17")
     (project . "milk-ssg")
-    (required-language . "COW")))
+    (required-language . "COW")
+    (license . "AGPL-3.0-or-later")))
 
 (define language-enforcement
   '((primary-language . "COW")
     (file-extension . ".cow")
-    (forbidden-languages . ("Python" "JavaScript" "TypeScript" "Ruby" "Go" "Rust"))
-    (rationale . "milk-ssg is the DEFINITIVE COW static site generator. It MUST be written entirely in COW (the esoteric language). No other implementation languages are permitted.")
-    (enforcement . "strict")))
+    (forbidden-languages . ("Python" "JavaScript" "TypeScript" "Ruby" "Go" "Rust" "Java"))
+    (adapter-exception . "ReScript in adapters/ only")
+    (rationale . "milk-ssg is the DEFINITIVE COW static site generator. It MUST be written entirely in COW.")
+    (enforcement . "strict")
+    (ci-enforced . #t)))
+
+;; ============================================================================
+;; COMPONENT STATUS (44/44 Template Adapted for COW)
+;; ============================================================================
 
 (define current-position
   '((phase . "v1.0.1 - Security Hardening Complete")
@@ -44,10 +60,15 @@
       (session . "language-fix")
       (notes . "Rewrote from Python to pure COW. Enforced language requirements.")))))
 
+;; ============================================================================
+;; STATE SUMMARY
+;; ============================================================================
+
 (define state-summary
   '((project . "milk-ssg")
+    (version . "1.1.0")
     (language . "COW")
-    (completion . 100)
+    (completion . "44/44 components")
     (blockers . 0)
     (security-status . "hardened")
     (updated . "2025-12-17")))
