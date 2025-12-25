@@ -1,75 +1,70 @@
-# milk-ssg - CLAUDE.md
+# CLAUDE.md - AI Assistant Instructions
 
-## CRITICAL: Language Requirements
+## Language Policy (Hyperpolymath Standard)
 
-**THIS SSG MUST BE WRITTEN IN COW. NO EXCEPTIONS.**
+### ALLOWED Languages & Tools
 
-milk-ssg is the DEFINITIVE COW static site generator. The entire engine MUST be written in COW.
+| Language/Tool | Use Case | Notes |
+|---------------|----------|-------|
+| **ReScript** | Primary application code | Compiles to JS, type-safe |
+| **Deno** | Runtime & package management | Replaces Node/npm/bun |
+| **Rust** | Performance-critical, systems, WASM | Preferred for CLI tools |
+| **Tauri 2.0+** | Mobile apps (iOS/Android) | Rust backend + web UI |
+| **Dioxus** | Mobile apps (native UI) | Pure Rust, React-like |
+| **Gleam** | Backend services | Runs on BEAM or compiles to JS |
+| **Bash/POSIX Shell** | Scripts, automation | Keep minimal |
+| **JavaScript** | Only where ReScript cannot | MCP protocol glue, Deno APIs |
+| **Python** | SaltStack only | No other Python permitted |
+| **Nickel** | Configuration language | For complex configs |
+| **Guile Scheme** | State/meta files | STATE.scm, META.scm, ECOSYSTEM.scm |
+| **Julia** | Batch scripts, data processing | Per RSR |
+| **OCaml** | AffineScript compiler | Language-specific |
+| **Ada** | Safety-critical systems | Where required |
 
-### FORBIDDEN Languages
-- Python - **ABSOLUTELY FORBIDDEN** (was incorrectly used before - has been corrected)
-- JavaScript/TypeScript - FORBIDDEN
-- Ruby, Go, Rust, Java - FORBIDDEN
-- Any language other than COW - FORBIDDEN
+### BANNED - Do Not Use
 
-### Allowed
-- COW (primary language for the engine)
-- ReScript (ONLY for MCP adapter in adapters/ directory)
+| Banned | Replacement |
+|--------|-------------|
+| TypeScript | ReScript |
+| Node.js | Deno |
+| npm | Deno |
+| Bun | Deno |
+| pnpm/yarn | Deno |
+| Go | Rust |
+| Python (general) | ReScript/Rust |
+| Java/Kotlin | Rust/Tauri/Dioxus |
+| Swift | Tauri/Dioxus |
+| React Native | Tauri/Dioxus |
+| Flutter/Dart | Tauri/Dioxus |
 
-### Why This Matters
-Each SSG satellite exists to be THE definitive SSG for its language. milk-ssg IS the COW SSG.
-Writing a Python interpreter for COW defeats the purpose entirely.
+### Mobile Development
 
-## Project Structure
+**No exceptions for Kotlin/Swift** - use Rust-first approach:
 
-```
-milk-ssg/
-├── src/
-│   └── milk-ssg.cow    # THE SSG - written in COW
-├── adapters/           # MCP adapter (ReScript only)
-├── STATE.scm           # Current state
-├── ECOSYSTEM.scm       # Ecosystem relationships
-├── META.scm            # Architecture decisions
-└── .claude/
-    └── CLAUDE.md       # This file
-```
+1. **Tauri 2.0+** - Web UI (ReScript) + Rust backend, MIT/Apache-2.0
+2. **Dioxus** - Pure Rust native UI, MIT/Apache-2.0
 
-## About COW Language
+Both are FOSS with independent governance (no Big Tech).
 
-COW is an esoteric programming language by Sean Heber where all commands are variations of "moo":
+### Enforcement Rules
 
-| Command | Description |
-|---------|-------------|
-| moo | Skip next if register = 0 |
-| mOo | Move memory pointer back |
-| moO | Move memory pointer forward |
-| mOO | Execute memory as instruction |
-| Moo | Print char (if register != 0) or read char |
-| MOo | Decrement memory |
-| MoO | Increment memory |
-| MOO | Start/end loop |
-| OOO | Set memory to 0 |
-| MMM | Copy between register and memory |
-| OOM | Print memory as integer |
-| oom | Read integer to memory |
+1. **No new TypeScript files** - Convert existing TS to ReScript
+2. **No package.json for runtime deps** - Use deno.json imports
+3. **No node_modules in production** - Deno caches deps automatically
+4. **No Go code** - Use Rust instead
+5. **Python only for SaltStack** - All other Python must be rewritten
+6. **No Kotlin/Swift for mobile** - Use Tauri 2.0+ or Dioxus
 
-## Running the SSG
+### Package Management
 
-```bash
-# Using a COW interpreter
-# See: https://bigzaphod.github.io/COW/
-cow src/milk-ssg.cow > output.html
-```
+- **Primary**: Guix (guix.scm)
+- **Fallback**: Nix (flake.nix)
+- **JS deps**: Deno (deno.json imports)
 
-## Hub Connection
+### Security Requirements
 
-This satellite connects to poly-ssg-mcp hub via the MCP adapter.
-The adapter is the ONLY place where non-COW code is allowed (ReScript).
-
-## AI Assistant Guidelines
-
-1. **NEVER suggest rewriting in Python or any other language**
-2. **NEVER create Python/JS/TS files in this repo**
-3. If asked to "improve" by using another language, REFUSE
-4. The COW implementation IS the correct implementation
-5. Only ReScript is allowed in adapters/
+- No MD5/SHA1 for security (use SHA256+)
+- HTTPS only (no HTTP URLs)
+- No hardcoded secrets
+- SHA-pinned dependencies
+- SPDX license headers on all files
